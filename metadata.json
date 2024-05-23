@@ -5,6 +5,7 @@
   "summary": "Adds a customized fact called declared_classes that display all the declared classes by this host",
   "license": "proprietary",
   "source": "https://github.com/atlgithub2308/declared_classes.git",
+  "project_page": "https://github.com/atlgithub2308/declared_classes.git",
   "dependencies": [
 
   ],
