@@ -15,7 +15,7 @@ information to include in your README.
 
 ## Description
 
-This module added a customized fact that display the declared classes of the agent. 
+This module adds a customized fact that display the declared classes of the agent. 
 
 
 ### Beginning with declared_classes
