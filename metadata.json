@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "author": "teckleong",
   "summary": "Adds a customized fact called declared_classes that display all the declared classes by this host",
-  "license": "proprietary",
+  "license": "Apache-2.0",
   "source": "https://github.com/atlgithub2308/declared_classes.git",
   "project_page": "https://github.com/atlgithub2308/declared_classes.git",
+  "project_page": "https://github.com/atlgithub2308/declared_classes",
+  "issues_url": "https://github.com/atlgithub2308/declared_classes/issues",
   "dependencies": [
 
   ],
