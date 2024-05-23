@@ -1,9 +1,8 @@
-name: "release"
+name: "weekly"
 
-on: 
-  push:
-    branches:
-      - 'release'
+on:
+  schedule:
+    - cron: '0 1 * * 2'
 
 jobs:
   LitmusAcceptance:
@@ -44,4 +43,3 @@ jobs:
       with:
         puppet_gem_version: ${{ matrix.puppet_gem_version }}
         check: ${{ matrix.check }}
-
