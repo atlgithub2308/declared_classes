@@ -2,7 +2,7 @@
   "name": "atlforge2308-declared_classes",
   "version": "0.1.0",
   "author": "teckleong",
-  "summary": "",
+  "summary": "Adds a customized fact called declared_classes that display all the declared classes by this host",
   "license": "proprietary",
   "source": "https://github.com/atlgithub2308/declared_classes.git",
   "dependencies": [
