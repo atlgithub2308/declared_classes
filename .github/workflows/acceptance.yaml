@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - 'master'
+      - 'main'
+      - 'dev_sooyean'
+      - 'release'
+      - 'hotfix'
 
 jobs:
   LitmusAcceptance:
@@ -11,7 +15,7 @@ jobs:
       PROVISION_LIST: acceptance
       ruby_version: 2.5.x
     runs-on: self-hosted
-    if: ${{ github.repository == 'puppetlabs/puppetlabs-servicenow_cmdb_integration' }}
+    if: ${{ github.repository == 'atlgithub2308/declared_classes' }}
 
     steps:
     - uses: actions/checkout@v1
