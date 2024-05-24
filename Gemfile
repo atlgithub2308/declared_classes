@@ -26,7 +26,7 @@ group :development do
   gem "puppet-module-win-dev-r#{minor_version}", '~> 1.0',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
   
   gem "stringio", '~>3.1.0',     								 require: false
-  gem "pdk",                                                     require: false
+  gem 'pdk', '~> 2.7', '>= 2.7.1',                               require: false
   gem "pry-byebug",                                              require: false
   gem "rdbg",                                                    require: false
   gem "rdebug",                                                  require: false
