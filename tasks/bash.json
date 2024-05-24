@@ -1,0 +1,6 @@
+{
+    "description": "Dummy bash task",
+    "private": true,
+    "input_method": "environment",
+    "parameters": {}
+  }
