@@ -41,7 +41,7 @@ describe :profiles, type: :fact do
     # Facter.add(:ec2_metadata) {}
     # allow(Facter).to receive(:value).with(:fqdn).and_return('test.example.com')
     # allow(Facter.fact(:ec2_metadata)).to receive(:value).and_return({'42'})
-    allow(Facter).to receive(:value).with(:fqdn).and_return('role::myrole puppet_enterprise::profile::agent
+    allow(Facter).to receive(:value).with(:declared_classes).and_return('role::myrole puppet_enterprise::profile::agent
     puppet_enterprise::profile::certificate_authority
     puppet_enterprise::profile::console
     puppet_enterprise::profile::database
