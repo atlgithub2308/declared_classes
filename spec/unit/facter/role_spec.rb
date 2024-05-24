@@ -41,37 +41,50 @@ describe :role, type: :fact do
     # Facter.add(:ec2_metadata) {}
     # allow(Facter).to receive(:value).with(:fqdn).and_return('test.example.com')
     # allow(Facter.fact(:ec2_metadata)).to receive(:value).and_return({'42'})
-    
-    allow(Facter).to receive(:value).with(:declared_classes).and_return('role::myrole puppet_enterprise::profile::agent
-      puppet_enterprise::profile::certificate_authority
-      puppet_enterprise::profile::console
-      puppet_enterprise::profile::database
-      puppet_enterprise::profile::master
-      puppet_enterprise::profile::orchestrator
-      puppet_enterprise::profile::puppetdb
-      puppet_enterprise::profile::master
-      puppet_enterprise::profile::master::classifier
-      puppet_enterprise::profile::master::auth_conf
-      puppet_enterprise::profile::master::puppetdb
-      puppet_enterprise::profile::controller
-      puppet_enterprise::profile::agent
-      puppet_enterprise::profile::certificate_authority
-      puppet_enterprise::profile::console
-      puppet_enterprise::profile::console::certs
-      puppet_enterprise::profile::console::console_services_config
-      puppet_enterprise::profile::console::proxy
-      puppet_enterprise::profile::console::proxy::nginx_conf
-      puppet_enterprise::profile::console::proxy::http_redirect
-      puppet_enterprise::profile::console::cache
-      puppet_enterprise::profile::database
-      puppet_enterprise::profile::orchestrator
-      puppet_enterprise::profile::bolt_server
-      puppet_enterprise::profile::plan_executor
-      puppet_enterprise::profile::ace_server
-      puppet_enterprise::profile::puppetdb')
+    factvaluesmocked = <<-vvvvv
+    role::myrole puppet_enterprise::profile::agent
+          puppet_enterprise::profile::certificate_authority
+          puppet_enterprise::profile::console
+          puppet_enterprise::profile::database
+          puppet_enterprise::profile::master
+          puppet_enterprise::profile::orchestrator
+          puppet_enterprise::profile::puppetdb
+          puppet_enterprise::profile::master
+          puppet_enterprise::profile::master::classifier
+          puppet_enterprise::profile::master::auth_conf
+          puppet_enterprise::profile::master::puppetdb
+          puppet_enterprise::profile::controller
+          puppet_enterprise::profile::agent
+          puppet_enterprise::profile::certificate_authority
+          puppet_enterprise::profile::console
+          puppet_enterprise::profile::console::certs
+          puppet_enterprise::profile::console::console_services_config
+          puppet_enterprise::profile::console::proxy
+          puppet_enterprise::profile::console::proxy::nginx_conf
+          puppet_enterprise::profile::console::proxy::http_redirect
+          puppet_enterprise::profile::console::cache
+          puppet_enterprise::profile::database
+          puppet_enterprise::profile::orchestrator
+          puppet_enterprise::profile::bolt_server
+          puppet_enterprise::profile::plan_executor
+          puppet_enterprise::profile::ace_server
+          puppet_enterprise::profile::puppetdb
+    vvvvv
+    Facter.add(:declared_classes) { factvaluesmocked }
+    allow(Facter).to receive(:value).with(no_args).and_return({:declared_classes => factvaluesmocked})
+    allow(Facter).to receive(:value).with(:declared_classes).and_return(factvaluesmocked)
+    allow(Facter.fact(:declared_classes)).to receive(:value).and_return(factvaluesmocked)
+      
+    factvaluesmocked=nil
+    [ :declared_classes_w, :declared_classes_l].each {|sym|
+      Facter.add(sym) { factvaluesmocked }
+      allow(Facter).to receive(:value).with(no_args).and_return({sym => factvaluesmocked})
+      allow(Facter).to receive(:value).with(sym).and_return(factvaluesmocked)
+      allow(Facter.fact(sym)).to receive(:value).and_return(factvaluesmocked)
+    }
   end
 
   it 'returns a value' do
-    expect(fact.value).to include( 'role::')
+    expect(fact.value[0]).to include( 'role::')
   end
 end
