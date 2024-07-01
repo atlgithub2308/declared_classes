@@ -18,7 +18,7 @@ jobs:
     if: ${{ github.repository == 'atlgithub2308/declared_classes' }}
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
     - name: Litmus Parallel Acceptance
       run: |
