@@ -1,0 +1,84 @@
+# This is a generic workflow for gem CI operations.
+name: "Gem CI"
+
+on:
+  workflow_call:
+    inputs:
+      ruby_version:
+        description: "The target Ruby version."
+        required: false
+        default: "2.7"
+        type: "string"
+      puppet_gem_version:
+        description: "Specifies the version of the Puppet gem to be installed"
+        required: false
+        default: "~> 7.0"
+        type: "string"
+      rake_task:
+        description: "The name of the rake task that executes tests"
+        required: false
+        default: "spec"
+        type: "string"
+      runs_on:
+        description: "The operating system used for the runner."
+        required: false
+        default: "ubuntu-latest"
+        type: "string"
+
+jobs:
+  spec:
+    name: "spec"
+    runs-on: ${{ inputs.runs_on }}
+
+    env:
+      PUPPET_GEM_VERSION: ${{ inputs.puppet_gem_version }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v4"
+        with:
+          fetch-depth: 1
+          # If we are on a PR, checkout the PR head sha, else checkout the default branch
+          # required when trigger set to pull_request_target, ternary syntax is "${{ x && 'ifTrue' || 'ifFalse'  }}"
+          ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.ref }}
+
+      - name: "export environment"
+        run: |
+          echo "PUPPET_GEM_VERSION=${{ inputs.puppet_gem_version }}" >> $GITHUB_ENV
+
+      - name: "setup ruby"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{ inputs.ruby_version }}
+          bundler-cache: true
+
+      - name: "bundle environment"
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: "rubocop"
+        run: |
+          bundle exec rubocop --format github
+
+      - name: "spec"
+        run: |
+          bundle exec rake ${{ inputs.rake_task }}
+
+      - name: Upload coverage reports to Codecov
+        # Only upload coverage reports once per CI.yml trigger, as multiple concurrent uploads can cause issues
+        # so limit this step to only run once, with a conditional check for the latest Ruby version, on Ubuntu-latest
+        # the check on inputs.rake_task helps to ensure this is only run when coverage rake_task has been executed
+        if: |
+          contains(inputs.rake_task, 'coverage') &&
+          inputs.runs_on == 'ubuntu-latest' &&
+          inputs.ruby_version == '3.2' &&
+          env.CODECOV_TOKEN != ''
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/.resultset.json
+          fail_ci_if_error: true
+          verbose: true

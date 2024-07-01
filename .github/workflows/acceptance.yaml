@@ -1,0 +1,29 @@
+name: acceptance
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'main'
+      - 'dev_sooyean'
+      - 'release'
+      - 'hotfix'
+
+jobs:
+  LitmusAcceptance:
+    env:
+      PROVISION_LIST: acceptance
+      ruby_version: 2.5.x
+    runs-on: self-hosted
+    if: ${{ github.repository == 'atlgithub2308/declared_classes' }}
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Litmus Parallel Acceptance
+      run: |
+        gem --version
+        gem install bundler
+        bundler -v
+        bundle install --jobs 4 --retry 2 --path .bundle/gems
+        bundle exec rake acceptance:ci_run_tests
