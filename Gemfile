@@ -38,6 +38,7 @@ group :development do
   gem "pry-byebug",                                              require: false
   gem "rdbg",                                                    require: false
   gem "rdebug",                                                  require: false
+  gem "pdk",                                                     require: false
  
 end
 group :development, :release_prep do
