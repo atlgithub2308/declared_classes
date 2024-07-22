@@ -36,12 +36,12 @@ describe :profiles, type: :fact do
   # allow(Facter::Core::Execution).to receive(:execute).with('uname 2>&1').and_return('Linux')
 
   before :each do
-      # perform any action that should be run before every test
-      Facter.clear
-      # Facter.add(:ec2_metadata) {}
-      # allow(Facter).to receive(:value).with(:fqdn).and_return('test.example.com')
-      # allow(Facter.fact(:ec2_metadata)).to receive(:value).and_return({'42'})
-      factvaluesmocked = <<-vvvvv
+    # perform any action that should be run before every test
+    Facter.clear
+    # Facter.add(:ec2_metadata) {}
+    # allow(Facter).to receive(:value).with(:fqdn).and_return('test.example.com')
+    # allow(Facter.fact(:ec2_metadata)).to receive(:value).and_return({'42'})
+    factvaluesmocked = <<-vvvvv
       role::myrole puppet_enterprise::profile::agent
             puppet_enterprise::profile::certificate_authority
             puppet_enterprise::profile::console
@@ -70,22 +70,21 @@ describe :profiles, type: :fact do
             puppet_enterprise::profile::ace_server
             puppet_enterprise::profile::puppetdb
       vvvvv
-      Facter.add(:declared_classes) { factvaluesmocked }
-      allow(Facter).to receive(:value).with(no_args).and_return({:declared_classes => factvaluesmocked})
-      allow(Facter).to receive(:value).with(:declared_classes).and_return(factvaluesmocked)
-      allow(Facter.fact(:declared_classes)).to receive(:value).and_return(factvaluesmocked)
-        
-      factvaluesmocked=nil
-      [ :declared_classes_w, :declared_classes_l].each {|sym|
-        Facter.add(sym) { factvaluesmocked }
-        allow(Facter).to receive(:value).with(no_args).and_return({sym => factvaluesmocked})
-        allow(Facter).to receive(:value).with(sym).and_return(factvaluesmocked)
-        allow(Facter.fact(sym)).to receive(:value).and_return(factvaluesmocked)
-      }
-    end
+    Facter.add(:declared_classes) { factvaluesmocked }
+    allow(Facter).to receive(:value).with(no_args).and_return({ declared_classes: factvaluesmocked })
+    allow(Facter).to receive(:value).with(:declared_classes).and_return(factvaluesmocked)
+    allow(Facter.fact(:declared_classes)).to receive(:value).and_return(factvaluesmocked)
 
+    factvaluesmocked = nil
+    [ :declared_classes_w, :declared_classes_l].each do |sym|
+      Facter.add(sym) { factvaluesmocked }
+      allow(Facter).to receive(:value).with(no_args).and_return({ sym => factvaluesmocked })
+      allow(Facter).to receive(:value).with(sym).and_return(factvaluesmocked)
+      allow(Facter.fact(sym)).to receive(:value).and_return(factvaluesmocked)
+    end
+  end
 
   it 'returns a value' do
-    expect(fact.value[0]).to include( 'profile::')
+    expect(fact.value[0]).to include('profile::')
   end
 end

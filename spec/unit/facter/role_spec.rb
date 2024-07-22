@@ -71,20 +71,20 @@ describe :role, type: :fact do
           puppet_enterprise::profile::puppetdb
     vvvvv
     Facter.add(:declared_classes) { factvaluesmocked }
-    allow(Facter).to receive(:value).with(no_args).and_return({:declared_classes => factvaluesmocked})
+    allow(Facter).to receive(:value).with(no_args).and_return({ declared_classes: factvaluesmocked })
     allow(Facter).to receive(:value).with(:declared_classes).and_return(factvaluesmocked)
     allow(Facter.fact(:declared_classes)).to receive(:value).and_return(factvaluesmocked)
-      
-    factvaluesmocked=nil
-    [ :declared_classes_w, :declared_classes_l].each {|sym|
+
+    factvaluesmocked = nil
+    [ :declared_classes_w, :declared_classes_l].each do |sym|
       Facter.add(sym) { factvaluesmocked }
-      allow(Facter).to receive(:value).with(no_args).and_return({sym => factvaluesmocked})
+      allow(Facter).to receive(:value).with(no_args).and_return({ sym => factvaluesmocked })
       allow(Facter).to receive(:value).with(sym).and_return(factvaluesmocked)
       allow(Facter.fact(sym)).to receive(:value).and_return(factvaluesmocked)
-    }
+    end
   end
 
   it 'returns a value' do
-    expect(fact.value[0]).to include( 'role::')
+    expect(fact.value[0]).to include('role::')
   end
 end
