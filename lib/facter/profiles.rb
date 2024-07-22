@@ -6,8 +6,9 @@ Facter.add(:profiles) do
     !"#{value}#{Facter.value[:declared_classes_w]}#{Facter.value[:declared_classes_l]}".empty?
   end
   setcode do
-    "#{Facter.value(:declared_classes)} #{Facter.value(:declared_classes_w)} #{Facter.value(:declared_classes_l)} ".split(%r{[\n ]+}).reject { |x|
+    v = "#{Facter.value(:declared_classes)} #{Facter.value(:declared_classes_w)} #{Facter.value(:declared_classes_l)} ".split(%r{[\n ]+}).reject do |x|
       x.nil? || x.empty?
-    }.select { |x| x.match?(%r{^profile::|::profile::}) }
+    end
+    v.select { |x| x.match?(%r{^profile::|::profile::}) }
   end
 end
