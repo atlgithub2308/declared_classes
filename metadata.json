@@ -1,6 +1,6 @@
 {
   "name": "atlforge2308-declared_classes",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "teckleong",
   "summary": "Adds a customized fact called declared_classes that display all the declared classes by this host",
   "license": "Apache-2.0",
