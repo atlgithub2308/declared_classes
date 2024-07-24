@@ -14,7 +14,7 @@ jobs:
     env:
       PROVISION_LIST: acceptance
       ruby_version: 2.5.x
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: ${{ github.repository == 'atlgithub2308/declared_classes' }}
 
     steps:
